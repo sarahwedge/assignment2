@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText addressInput;
 
     private TextView latitudeOutput, longitudeOutput;
-    private Button submit;
+    private Button submit, edit;
 
 
     private ArrayList<Location> locArrayList;
@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         addressInput = findViewById(R.id.addressField);
         latitudeOutput = findViewById(R.id.LatView);
         longitudeOutput = findViewById(R.id.LongView);
+
+        latitudeOutput.setVisibility(View.INVISIBLE);
+        longitudeOutput.setVisibility(View.INVISIBLE);
 
 
 
@@ -67,6 +70,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        edit = findViewById(R.id.editButton);
+        edit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EditEntriesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         submit = findViewById(R.id.submitButton);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 String result = dbHandler.getCoordinates(address);
                 if(result != "") {
                     String values[] = result.split(" ");
+                    latitudeOutput.setVisibility(View.VISIBLE);
+                    longitudeOutput.setVisibility(View.VISIBLE);
                     latitudeOutput.setText(values[0]);
                     longitudeOutput.setText(values[1]);
                 }

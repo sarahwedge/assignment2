@@ -15,6 +15,7 @@
         android:layout_height="50dp"
         android:background="#A3BDFF"
         android:gravity="center_vertical"
+        android:paddingLeft="20dp"
         android:text="Location App"
         android:textSize="24sp" />
 
