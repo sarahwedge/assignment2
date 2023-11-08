@@ -2,10 +2,15 @@ package com.example.assignment2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +24,13 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
-    public String adds = "";
     private  DBHandler dbHandler;
+
+    private EditText addressInput;
+
+    private TextView latitudeOutput, longitudeOutput;
+    private Button submit;
+
 
     private ArrayList<Location> locArrayList;
     @Override
@@ -31,27 +41,45 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(MainActivity.this);
         locArrayList = new ArrayList<>();
 
-        int NUM_RESULTS = 3;
-        double longitude = -120.37124139999997;
-        double latitude = 50.6720143;
+        addressInput = findViewById(R.id.addressField);
+        latitudeOutput = findViewById(R.id.LatView);
+        longitudeOutput = findViewById(R.id.LongView);
 
-        reverseGeo(latitude, longitude, NUM_RESULTS);
 
-        String path = "values.txt";
-        String result;
-        try {
-            readFile(path);
-            locArrayList = dbHandler.readLocations();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
+        locArrayList = dbHandler.readLocations();
+
+        //check if database is already populated
         if(!locArrayList.isEmpty()) {
             for(Location loc : locArrayList) {
-                Log.i("location", loc.getId() + " " + loc.getAddress());
+                Log.i("location", loc.getId() + " " + loc.getAddress()); //this is just for debugging
             }
         }
 
+        //call the readFile method so the database can be populated with the 50 addresses from the coordinate pairs and store the location info inside the array list
+        else {
+            String fileName = "values.txt";
+            try {
+                readFile(fileName);
+                locArrayList = dbHandler.readLocations();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        submit = findViewById(R.id.submitButton);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String address = addressInput.getText().toString();
+                String result = dbHandler.getCoordinates(address);
+                if(result != "") {
+                    String values[] = result.split(" ");
+                    latitudeOutput.setText(values[0]);
+                    longitudeOutput.setText(values[1]);
+                }
+            }
+        });
 
     }
 
@@ -82,28 +110,8 @@ public class MainActivity extends AppCompatActivity {
         return results;
     }
 
-    public void geocode(String address, int NUM_RESULTS) {
-        if (Geocoder.isPresent()) {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//            String address = "900 McGill Road";
-            try {
-                List<Address> ls=
-                        geocoder.getFromLocationName(address,NUM_RESULTS);
-                for (Address addr: ls) {
-                    double latitude = addr.getLatitude();
-                    double longitude = addr.getLongitude();
-                    Log.i("lat", String.valueOf(latitude));
-                    Log.i("long", String.valueOf(longitude));
-
-                }
-            } catch (IOException e) {  }
-        }
-    }
-
     public void readFile(String fileName) throws IOException {
-        StringBuilder content = new StringBuilder();
         String[] coords;
-        List<String> addresses = new ArrayList<>();
         String address = "";
 
         // Create a FileInputStream and a BufferedReader to read the file
@@ -111,18 +119,12 @@ public class MainActivity extends AppCompatActivity {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-//                content.append(line).append('\n'); // Read each line and append it to the content
                 coords = line.split(", ");
-//                addresses.add(reverseGeo(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), 1));
                 address = reverseGeo(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), 1);
                 if(address != null) {
                     dbHandler.addNewLocation(address, coords[0], coords[1]);
                 }
             }
-        }
-        for(String add: addresses) {
-            adds += add + "\n";
-
         }
     }
 

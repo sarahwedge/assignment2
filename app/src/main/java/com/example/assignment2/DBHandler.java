@@ -36,11 +36,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 + LONGITUDE_COL + " TEXT)";
 
         sqLiteDatabase.execSQL(query);
-
-        // on below line we are creating a variable for
-        // our sqlite database and calling writable method
-        // as we are writing data in our database.
-
     }
 
     public void addNewLocation(String address, String latitude, String longitude) {
@@ -134,6 +129,33 @@ public class DBHandler extends SQLiteOpenHelper {
         String[] whereArgs = { String.valueOf(id) };
 
         db.update(TABLE_NAME, values, whereClause, whereArgs);
+    }
+
+    public String getCoordinates(String address) {
+        String latitude, longitude;
+        String result = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = "address = ?";
+        String[] columns = {LATITUDE_COL, LONGITUDE_COL};
+        String[] selectionArgs = {address};
+
+        Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int latIndex = cursor.getColumnIndex(LATITUDE_COL);
+                int longIndex = cursor.getColumnIndex(LONGITUDE_COL);
+                latitude = cursor.getString(latIndex);
+                longitude = cursor.getString(longIndex);
+                // Use latitude and longitude values here
+                result = latitude + " " + longitude;
+            } else {
+                // Address not found in the database
+            }
+            cursor.close();
+            db.close();
+        }
+
+        return result;
     }
 }
 
