@@ -79,47 +79,11 @@ public class DBHandler extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN image BLOB");
     }
 
-//    public ArrayList<Note> readNotes() {
-//        // on below line we are creating a
-//        // database for reading our database.
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        // on below line we are creating a cursor with query to
-//        // read data from database.
-//        Cursor cursorNotes
-//                = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-//
-//        // on below line we are creating a new array list.
-//        ArrayList<Note> notesArrayList
-//                = new ArrayList<>();
-//
-//        // moving our cursor to first position.
-//        if (cursorNotes.moveToFirst()) {
-//            do {
-//                // on below line we are adding the data from
-//                // cursor to our array list.
-//                notesArrayList.add(new Note(
-//                        cursorNotes.getInt(0),
-//                        cursorNotes.getString(1),
-//                        cursorNotes.getString(2),
-//                        cursorNotes.getBlob(3),
-//                        cursorNotes.getString(4)));
-//            } while (cursorNotes.moveToNext());
-//            // moving our cursor to next.
-//        }
-//
-//
-//        // at last closing our cursor
-//        // and returning our array list.
-//        cursorNotes.close();
-//
-//        return notesArrayList;
-//    }
+    public void removeLocation(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(String.format("DELETE FROM " + TABLE_NAME + " WHERE id='%d'",id));
 
-//    public void removeNote(int id) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.execSQL(String.format("DELETE FROM notes WHERE id='%d'",id));
-//
-//    }
+    }
 
     public ArrayList<Location> readLocations() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -159,18 +123,17 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
-//    public void updateNote(int id, String newTitle, String newDesc, String newColour, byte[] newImg) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put("title", newTitle);
-//        values.put("description", newDesc);
-//        values.put("colour", newColour);
-//        values.put("image", newImg);
-//
-//        String whereClause = "id = ?";
-//        String[] whereArgs = { String.valueOf(id) };
-//
-//        db.update(TABLE_NAME, values, whereClause, whereArgs);
-//    }
+    public void updateLocation(int id, String address, String latitude, String longitude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ADDRESSES_COL, address);
+        values.put(LATITUDE_COL, latitude);
+        values.put(LONGITUDE_COL, longitude);
+
+        String whereClause = "id = ?";
+        String[] whereArgs = { String.valueOf(id) };
+
+        db.update(TABLE_NAME, values, whereClause, whereArgs);
+    }
 }
 
