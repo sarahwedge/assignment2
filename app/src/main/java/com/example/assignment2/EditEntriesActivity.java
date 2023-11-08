@@ -18,7 +18,7 @@ public class EditEntriesActivity extends AppCompatActivity implements AdapterVie
     private String selectedOption = "none"; //entered option
     private Button go;
 private DBHandler dbHandler;
-    private EditText address, latitude, longitude;
+    private EditText address, newAddress, latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +35,12 @@ private DBHandler dbHandler;
         spinner.setOnItemSelectedListener(this); //recognize when an item is selected from the spinner dropdown options
 
         address = findViewById(R.id.addressField2);
+        newAddress = findViewById(R.id.newAddressField);
         latitude = findViewById(R.id.latitudeField);
         longitude = findViewById(R.id.longitudeField);
 
         address.setVisibility(View.INVISIBLE);
+        newAddress.setVisibility(View.INVISIBLE);
         latitude.setVisibility(View.INVISIBLE);
         longitude.setVisibility(View.INVISIBLE);
 
@@ -48,7 +50,7 @@ private DBHandler dbHandler;
 
             @Override
             public void onClick(View v) {
-                String a;
+                String a, na;
                 switch(selectedOption) {
                     case "Add Entry":
                         a = String.valueOf(address.getText());
@@ -68,10 +70,18 @@ private DBHandler dbHandler;
                         break;
                     case "Update Entry":
                        a = String.valueOf(address.getText());
-
+                       na = String.valueOf(newAddress.getText());
+                       try {
+                           dbHandler.updateLocation(a, na);
+                       } catch (Exception e) {
+                           Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
+                           break;
+                       }
+                        Toast.makeText(getApplicationContext(),"Entry has been updated.",Toast.LENGTH_SHORT).show();
                         break;
                     case "Delete Entry":
-
+                        a = String.valueOf(address.getText());
+                        dbHandler.removeLocation();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"Please Select an Option.",Toast.LENGTH_SHORT).show();
@@ -87,12 +97,19 @@ private DBHandler dbHandler;
         switch(selectedOption) {
             case "Add Entry":
                 address.setVisibility(View.VISIBLE);
+                newAddress.setVisibility(View.INVISIBLE);
                 latitude.setVisibility(View.VISIBLE);
                 longitude.setVisibility(View.VISIBLE);
                 break;
             case "Update Entry":
+                address.setVisibility(View.VISIBLE);
+                newAddress.setVisibility(View.VISIBLE);
+                latitude.setVisibility(View.INVISIBLE);
+                longitude.setVisibility(View.INVISIBLE);
+                break;
             case "Delete Entry":
                 address.setVisibility(View.VISIBLE);
+                newAddress.setVisibility(View.INVISIBLE);
                 latitude.setVisibility(View.INVISIBLE);
                 longitude.setVisibility(View.INVISIBLE);
                 break;

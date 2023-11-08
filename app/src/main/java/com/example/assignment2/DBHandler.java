@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -103,30 +104,29 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
 
-    public boolean idExists(int id) {
+    public int getID(String address) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT 1 FROM " + TABLE_NAME + " WHERE " + IDS_COL + " = ?";
-        String[] selectionArgs = { String.valueOf(id) };
+        int id = -1;
+        String query = "SELECT 1 FROM " + TABLE_NAME + " WHERE " + ADDRESSES_COL + " = ?";
+        String[] selectionArgs = {address};
+        Log.i("address", address);
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
 
-        try {
-            return cursor.getCount() > 0;
-        } finally {
-            cursor.close();
+        if (cursor.getCount() > 0) {
+            id = cursor.getInt(0);
         }
+        cursor.close();
+        return id;
     }
 
-    public void updateLocation(int id, String address, String latitude, String longitude) {
+    public void updateLocation(String address, String newAddress) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ADDRESSES_COL, address);
-        values.put(LATITUDE_COL, latitude);
-        values.put(LONGITUDE_COL, longitude);
+        values.put(ADDRESSES_COL, newAddress);
 
-        String whereClause = "id = ?";
-        String[] whereArgs = { String.valueOf(id) };
+        String whereClause = "address = ?";
+        String[] whereArgs = {address};
 
         db.update(TABLE_NAME, values, whereClause, whereArgs);
     }
