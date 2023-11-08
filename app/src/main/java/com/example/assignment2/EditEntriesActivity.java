@@ -81,7 +81,14 @@ private DBHandler dbHandler;
                         break;
                     case "Delete Entry":
                         a = String.valueOf(address.getText());
-                        dbHandler.removeLocation();
+                        try {
+                            dbHandler.removeLocation(a);
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
+
+                        }
+//                        Toast.makeText(getApplicationContext(),"Entry has been updated.",Toast.LENGTH_SHORT).show();
+
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"Please Select an Option.",Toast.LENGTH_SHORT).show();

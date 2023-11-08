@@ -75,10 +75,9 @@ public class DBHandler extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN image BLOB");
     }
 
-    public void removeLocation(int id) {
+    public void removeLocation(String address) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(String.format("DELETE FROM " + TABLE_NAME + " WHERE id='%d'",id));
-
+        db.execSQL(String.format("DELETE FROM " + TABLE_NAME + " WHERE " + ADDRESSES_COL + "='%s'",address));
     }
 
     public ArrayList<Location> readLocations() {
