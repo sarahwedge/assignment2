@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">assignment2</string>
+    <string name="header">Location App</string>
+    <string name="subheading1">Select the action you want to perform</string>
+    <string name="subheading2">Option</string>
+    <string name="subheading3">Enter an address below to receive its latitude and longitude coordinates.</string>
+    <string name="subheading4">To add, update, or delete a location entry,  click here:</string>
+    <string name="addressInput">Enter address here:</string>
+    <string name="newAddressInput">Enter new address here:</string>
+    <string name="latInput">Enter latitude here:</string>
+    <string name="lonInput">Enter longitude here:</string>
+    <string name="submit">Submit</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit Data</string>
+    <string name="show">Show Latitude and Longitude</string>
+    <string name="label1">Latitude</string>
+    <string name="label2">Longitude</string>
+
 </resources>

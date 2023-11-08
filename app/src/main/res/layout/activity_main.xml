@@ -13,10 +13,10 @@
         android:id="@+id/Header"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#A3BDFF"
+        android:background="@color/main"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:text="Location App"
+        android:text="@string/header"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:paddingStart="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Enter an address below to receive its latitude and longitude coordinates."
+            android:text="@string/subheading3"
             android:textSize="20sp" />
 
         <EditText
@@ -40,15 +40,15 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:gravity="start|center_horizontal"
-            android:hint="Enter address here"
+            android:hint="@string/addressInput"
             android:paddingStart="20dp" />
 
         <Button
             android:id="@+id/submitButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:backgroundTint="#A2BCFE"
-            android:text="Show Latitude and Longitude"
+            android:backgroundTint="@color/main"
+            android:text="@string/show"
             android:textColor="#3C3C3C"
             android:textSize="18sp" />
     </LinearLayout>
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Latitude"
+            android:text="@string/label1"
             android:textSize="20sp" />
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="30dp"
             android:layout_weight="1"
-            android:background="#E0E9FF"
+            android:background="@color/lightMain"
             android:text=""
             android:textSize="18sp" />
 
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Longitude"
+            android:text="@string/label2"
             android:textSize="20sp" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="#DFE8FE"
+            android:background="@color/lightMain"
             android:text=""
             android:textSize="18sp" />
     </LinearLayout>
@@ -105,7 +105,7 @@
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="To add, update, or delete a location entry,  click here: "
+        android:text="@string/subheading4"
         android:textSize="20sp" />
 
     <Button
@@ -113,8 +113,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:backgroundTint="#A2BCFE"
-        android:text="Edit Data"
+        android:backgroundTint="@color/main"
+        android:text="@string/edit"
         android:textColor="#3C3C3C"
         android:textSize="18sp" />
 </LinearLayout>

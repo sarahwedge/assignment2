@@ -18,10 +18,10 @@
             android:id="@+id/Header"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#A3BDFF"
+            android:background="@color/main"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:text="Location App"
+            android:text="@string/header"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Select the action you want to perform."
+            android:text="@string/subheading1"
             android:textSize="20sp" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Option"
+            android:text="@string/subheading2"
             android:textSize="20sp" />
 
         <Spinner
@@ -64,7 +64,7 @@
         android:layout_height="90dp"
         android:layout_weight="1"
         android:gravity="start|center_horizontal"
-        android:hint="Enter address here"
+        android:hint="@string/addressInput"
         android:paddingStart="20dp" />
 
     <EditText
@@ -73,7 +73,7 @@
         android:layout_height="90dp"
         android:layout_weight="1"
         android:gravity="start|center_horizontal"
-        android:hint="Enter new address here"
+        android:hint="@string/newAddressInput"
         android:paddingStart="20dp" />
 
     <EditText
@@ -82,7 +82,7 @@
         android:layout_height="90dp"
         android:layout_weight="1"
         android:gravity="start|center_horizontal"
-        android:hint="Enter latitude here"
+        android:hint="@string/latInput"
         android:paddingStart="20dp" />
 
     <EditText
@@ -91,7 +91,7 @@
         android:layout_height="90dp"
         android:layout_weight="1"
         android:gravity="start|center_horizontal"
-        android:hint="Enter longitude here"
+        android:hint="@string/lonInput"
         android:paddingStart="20dp" />
 
     <Button
@@ -99,8 +99,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:backgroundTint="#A2BCFE"
-        android:text="Submit"
+        android:backgroundTint="@color/main"
+        android:text="@string/submit"
         android:textColor="#3C3C3C"
         android:textSize="18sp" />
 
@@ -110,8 +110,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#BDBDBD"
-        android:text="Back"
+        android:backgroundTint="@color/greyButton"
+        android:text="@string/back"
         android:textColor="#3C3C3C"
         android:textSize="18sp" />
 </LinearLayout>
