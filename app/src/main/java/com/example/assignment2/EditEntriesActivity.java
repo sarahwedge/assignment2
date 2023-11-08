@@ -63,32 +63,51 @@ private DBHandler dbHandler;
                             Toast.makeText(getApplicationContext(), "Ensure Latitude and Longitude follow a numerical decimal format.", Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        if(!a.isEmpty()) {
+                        catch(NullPointerException npe) {
+                            Toast.makeText(getApplicationContext(), "Ensure Latitude and Longitude fields are not empty.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        if(a.trim().length() != 0) {
                             dbHandler.addNewLocation(a, String.valueOf(latitude.getText()), String.valueOf(longitude.getText()));
                             Toast.makeText(getApplicationContext(),"Entry has been added.",Toast.LENGTH_SHORT).show();
                         }
+                        else {
+                            Toast.makeText(getApplicationContext(),"Ensure address field is not empty.",Toast.LENGTH_SHORT).show();
+                        }
                         break;
+
+
                     case "Update Entry":
-                       a = String.valueOf(address.getText());
-                       na = String.valueOf(newAddress.getText());
-                       try {
-                           dbHandler.updateLocation(a, na);
-                       } catch (Exception e) {
-                           Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
-                           break;
-                       }
-                        Toast.makeText(getApplicationContext(),"Entry has been updated.",Toast.LENGTH_SHORT).show();
-                        break;
+                            a = String.valueOf(address.getText());
+                            na = String.valueOf(newAddress.getText());
+
+                        if(a.trim().length() != 0 && na.trim().length() != 0) {
+
+                                if(dbHandler.updateLocation(a, na)) {
+                                    Toast.makeText(getApplicationContext(),"Entry has been updated.",Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(),"Ensure both address fields are not empty.",Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
                     case "Delete Entry":
                         a = String.valueOf(address.getText());
-                        try {
-                            dbHandler.removeLocation(a);
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
-
+                        if(a.trim().length() != 0) {
+                            if(dbHandler.removeLocation(a)) {
+                                Toast.makeText(getApplicationContext(),"Entry has been deleted.",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(),"Entry does not exist.",Toast.LENGTH_SHORT).show();
+                            }
                         }
-//                        Toast.makeText(getApplicationContext(),"Entry has been updated.",Toast.LENGTH_SHORT).show();
-
+                       else {
+                            Toast.makeText(getApplicationContext(),"Ensure address field is not empty.",Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"Please Select an Option.",Toast.LENGTH_SHORT).show();

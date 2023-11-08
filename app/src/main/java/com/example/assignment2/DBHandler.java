@@ -39,13 +39,12 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query);
     }
 
-    public void addNewLocation(String address, String latitude, String longitude) {
+    public boolean addNewLocation(String address, String latitude, String longitude) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         // on below line we are creating a
         // variable for content values.
         ContentValues values = new ContentValues();
-
 
 
         // on below line we are passing all values
@@ -55,29 +54,38 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(LONGITUDE_COL, longitude);
 
         // after adding all values we are passing
-        // content values to our table.
-        db.insert(TABLE_NAME, null, values);
+        // content values to our tables
 
-
-        // at last we are closing our
-        // database after adding database.
+        long changes = db.insert(TABLE_NAME, null, values);
+        if(changes == -1) {
+            db.close();
+            return false;
+        }
         db.close();
+        return true;
     }
 
     //
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         // this method is called to check if the table exists already.
-//        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
-//        sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN colour TEXT");
-//        sqLiteDatabase.execSQL("ALTER TABLE notes ADD COLUMN image BLOB");
     }
 
-    public void removeLocation(String address) {
+    public boolean removeLocation(String address) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(String.format("DELETE FROM " + TABLE_NAME + " WHERE " + ADDRESSES_COL + "='%s'",address));
+
+        String whereClause = "address = ?";
+        String[] whereArgs = {address};
+
+        int changes = db.delete(TABLE_NAME, whereClause, whereArgs);
+        if(changes == 0) {
+            db.close();
+            return false;
+        }
+        db.close();
+        return true;
     }
 
     public ArrayList<Location> readLocations() {
@@ -96,6 +104,7 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
             // moving our cursor to next.
         }
+        db.close();
         cursor.close();
 
         return locArrayList;
@@ -115,11 +124,12 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             id = cursor.getInt(0);
         }
+        db.close();
         cursor.close();
         return id;
     }
 
-    public void updateLocation(String address, String newAddress) {
+    public boolean updateLocation(String address, String newAddress) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ADDRESSES_COL, newAddress);
@@ -127,7 +137,13 @@ public class DBHandler extends SQLiteOpenHelper {
         String whereClause = "address = ?";
         String[] whereArgs = {address};
 
-        db.update(TABLE_NAME, values, whereClause, whereArgs);
+        int changes = db.update(TABLE_NAME, values, whereClause, whereArgs);
+        if(changes == 0) {
+            db.close();
+            return false;
+        }
+        db.close();
+        return true;
     }
 
     public String getCoordinates(String address) {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,13 +86,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String address = addressInput.getText().toString();
-                String result = dbHandler.getCoordinates(address);
-                if(result != "") {
-                    String values[] = result.split(" ");
-                    latitudeOutput.setVisibility(View.VISIBLE);
-                    longitudeOutput.setVisibility(View.VISIBLE);
-                    latitudeOutput.setText(values[0]);
-                    longitudeOutput.setText(values[1]);
+
+                if(address.trim().length() != 0 ) {
+                    String result = dbHandler.getCoordinates(address);
+                    if(result != "") {
+                        String values[] = result.split(" ");
+                        latitudeOutput.setVisibility(View.VISIBLE);
+                        longitudeOutput.setVisibility(View.VISIBLE);
+                        latitudeOutput.setText(values[0]);
+                        longitudeOutput.setText(values[1]);
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Ensure address field is not empty.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
