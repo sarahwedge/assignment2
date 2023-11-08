@@ -1,9 +1,8 @@
 /*
-Class: DBHandler.java
+Class: Location.java
 Date: Nov 8th 2023
 Programmer: Sarah Wedge
-Description:
-
+Description: Class represents a location object, which has an id, address, latitude, and longitude.
  */
 
 package com.example.assignment2;
