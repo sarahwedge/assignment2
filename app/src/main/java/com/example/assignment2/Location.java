@@ -1,3 +1,11 @@
+/*
+Class: DBHandler.java
+Date: Nov 8th 2023
+Programmer: Sarah Wedge
+Description:
+
+ */
+
 package com.example.assignment2;
 
 public class Location {
