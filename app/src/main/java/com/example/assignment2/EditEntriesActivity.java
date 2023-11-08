@@ -2,6 +2,7 @@ package com.example.assignment2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +17,7 @@ public class EditEntriesActivity extends AppCompatActivity implements AdapterVie
     private Spinner spinner;
     private static final String[] options = {"Add Entry", "Update Entry", "Delete Entry"};
     private String selectedOption = "none"; //entered option
-    private Button go;
+    private Button go, back;
 private DBHandler dbHandler;
     private EditText address, newAddress, latitude, longitude;
     @Override
@@ -44,6 +45,15 @@ private DBHandler dbHandler;
         latitude.setVisibility(View.INVISIBLE);
         longitude.setVisibility(View.INVISIBLE);
 
+        back = findViewById(R.id.backButton);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditEntriesActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         go = findViewById(R.id.editButton);
         go.setOnClickListener(new View.OnClickListener() {
