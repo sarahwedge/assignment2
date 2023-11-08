@@ -20,10 +20,16 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
 
     public String adds = "";
+    private  DBHandler dbHandler;
+
+    private ArrayList<Location> locArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHandler = new DBHandler(MainActivity.this);
+        locArrayList = new ArrayList<>();
 
         int NUM_RESULTS = 3;
         double longitude = -120.37124139999997;
@@ -35,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
         String result;
         try {
             readFile(path);
-            Log.i("result", adds);
+            locArrayList = dbHandler.readLocations();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-
+        if(!locArrayList.isEmpty()) {
+            for(Location loc : locArrayList) {
+                Log.i("location", loc.getId() + " " + loc.getAddress());
+            }
+        }
 
 
     }
@@ -94,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder content = new StringBuilder();
         String[] coords;
         List<String> addresses = new ArrayList<>();
+        String address = "";
 
         // Create a FileInputStream and a BufferedReader to read the file
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)))) {
@@ -102,7 +113,11 @@ public class MainActivity extends AppCompatActivity {
             while ((line = bufferedReader.readLine()) != null) {
 //                content.append(line).append('\n'); // Read each line and append it to the content
                 coords = line.split(", ");
-                addresses.add(reverseGeo(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), 1));
+//                addresses.add(reverseGeo(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), 1));
+                address = reverseGeo(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]), 1);
+                if(address != null) {
+                    dbHandler.addNewLocation(address, coords[0], coords[1]);
+                }
             }
         }
         for(String add: addresses) {
@@ -110,4 +125,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 }
