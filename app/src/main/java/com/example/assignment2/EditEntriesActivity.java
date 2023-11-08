@@ -17,12 +17,14 @@ public class EditEntriesActivity extends AppCompatActivity implements AdapterVie
     private static final String[] options = {"Add Entry", "Update Entry", "Delete Entry"};
     private String selectedOption = "none"; //entered option
     private Button go;
-
+private DBHandler dbHandler;
     private EditText address, latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entries);
+
+        dbHandler = new DBHandler(getApplicationContext());
 
         spinner = (Spinner)findViewById(R.id.editOptionSelect); //initialize the spinner IR object (IR = interest rate) to the interest rate spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditEntriesActivity.this,
@@ -46,11 +48,26 @@ public class EditEntriesActivity extends AppCompatActivity implements AdapterVie
 
             @Override
             public void onClick(View v) {
+                String a;
                 switch(selectedOption) {
                     case "Add Entry":
-                        
+                        a = String.valueOf(address.getText());
+
+                        try{
+                            Double lat = Double.parseDouble(String.valueOf(latitude.getText()));
+                            Double lon = Double.parseDouble(String.valueOf(longitude.getText()));
+                        }
+                        catch(NumberFormatException nfe) {
+                            Toast.makeText(getApplicationContext(), "Ensure Latitude and Longitude follow a numerical decimal format.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        if(!a.isEmpty()) {
+                            dbHandler.addNewLocation(a, String.valueOf(latitude.getText()), String.valueOf(longitude.getText()));
+                            Toast.makeText(getApplicationContext(),"Entry has been added.",Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case "Update Entry":
+                       a = String.valueOf(address.getText());
 
                         break;
                     case "Delete Entry":
